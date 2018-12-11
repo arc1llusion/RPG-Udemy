@@ -10,6 +10,10 @@ public class CursorAffordance : MonoBehaviour {
     [SerializeField] Texture2D targetCursor = null;
     [SerializeField] Vector2 cursorHotspot = new Vector2(0, 0);
 
+    // TODO solve fight between serialize and const
+    [SerializeField] const int walkableLayerNumber = 8;
+    [SerializeField] const int enemyLayerNumber = 9;
+
     CameraRaycaster cameraRaycaster;
 
 	// Use this for initialization
@@ -22,10 +26,10 @@ public class CursorAffordance : MonoBehaviour {
         print("Cusor over new layer");
         switch (newLayer)
         {
-            case 8: 
+            case walkableLayerNumber:
                 Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
                 break;
-            case 9:
+            case enemyLayerNumber:
                 Cursor.SetCursor(targetCursor, cursorHotspot, CursorMode.Auto);
                 break;
             default:
