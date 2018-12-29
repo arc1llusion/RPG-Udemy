@@ -17,10 +17,9 @@ namespace RPG.Characters
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float damagePerHit = 10f;
         [SerializeField] Weapon weaponInUse;
-
         [SerializeField] AnimatorOverrideController animatorOverrideController;
-        private Animator animator;
 
+        Animator animator;
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
@@ -49,7 +48,7 @@ namespace RPG.Characters
         {
             animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorOverrideController;
-            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip();
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); // remove const
         }
 
         private void PutWeaponInHand()
@@ -80,37 +79,29 @@ namespace RPG.Characters
         {
             if (layerHit == enemyLayer)
             {
-                var target = raycastHit.collider.gameObject;
-
-                // Check enemy is in range 
-                if(IsTargetInRange(target))
+                var enemy = raycastHit.collider.gameObject;
+                if (IsTargetInRange(enemy))
                 {
-                    AttackTarget(target);
+                    AttackTarget(enemy);
                 }
             }
-        }
-
-        private bool IsTargetInRange(GameObject target)
-        {
-            return (target.transform.position - transform.position).magnitude <= weaponInUse.MaxAttackRange;
         }
 
         private void AttackTarget(GameObject target)
         {
             var enemyComponent = target.GetComponent<Enemy>();
-            if (Time.time - lastHitTime > weaponInUse.MinTimeBetweenHits)
+            if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
             {
+                animator.SetTrigger("Attack"); // TODO make const
                 enemyComponent.TakeDamage(damagePerHit);
-                transform.LookAt(enemyComponent.transform);
-
                 lastHitTime = Time.time;
-                TriggerAttackAnimation();
             }
         }
 
-        private void TriggerAttackAnimation()
+        private bool IsTargetInRange(GameObject target)
         {
-            animator.SetTrigger("Attack");
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            return distanceToTarget <= weaponInUse.GetMaxAttackRange();
         }
     }
 }
