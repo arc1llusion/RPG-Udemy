@@ -15,14 +15,12 @@ namespace RPG.Characters
 
         Camera cameraToLookAt;
 
-        // Use this for initialization 
         void Start()
         {
             cameraToLookAt = Camera.main;
             Instantiate(enemyCanvasPrefab, transform.position, Quaternion.identity, transform);
         }
 
-        // Update is called once per frame 
         void LateUpdate()
         {
             transform.LookAt(cameraToLookAt.transform);
