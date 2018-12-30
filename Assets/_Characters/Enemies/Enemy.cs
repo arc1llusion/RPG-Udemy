@@ -18,8 +18,8 @@ namespace RPG.Characters
         [SerializeField] float attackRadius = 4f;
         [SerializeField] float damagePerShot = 9f;
         [SerializeField] float secondsBetweenShots = 0.5f;
-        [SerializeField] GameObject projectileToUse;
-        [SerializeField] GameObject projectileSocket;
+        [SerializeField] GameObject projectileToUse = null;
+        [SerializeField] GameObject projectileSocket = null;
         [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
 
         bool isAttacking = false;
