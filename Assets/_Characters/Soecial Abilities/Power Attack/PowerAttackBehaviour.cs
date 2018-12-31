@@ -5,28 +5,12 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-    public class PowerAttackBehaviour : MonoBehaviour, ISpecialAbility
+    public class PowerAttackBehaviour : BaseBehaviour<PowerAttackConfig>
     {
-        PowerAttackConfig config = null;
-
-        void Start()
+        public override void Use(AbilityUseParams abilityParams)
         {
-
-        }
-
-        void Update()
-        {
-
-        }
-
-        public void Use()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        internal void SetConfig(PowerAttackConfig powerAttackConfig)
-        {
-            config = powerAttackConfig;
+            float damageToDeal = abilityParams.baseDamage + config.GetExtraDamage();
+            abilityParams.target.TakeDamage(damageToDeal);
         }
     }
 }

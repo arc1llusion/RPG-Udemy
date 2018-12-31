@@ -741,7 +741,8 @@ MonoBehaviour:
   weaponInUse: {fileID: 11400000, guid: 34ab0c72d9a69d447bfdb07b7a6d8ded, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: e92f24f13a6764b40bb121d6a2e3d168,
     type: 2}
-  ability1: {fileID: 11400000, guid: 4eb3a5c08ad59c741bbaca86637ad94a, type: 2}
+  abilities:
+  - {fileID: 11400000, guid: 4eb3a5c08ad59c741bbaca86637ad94a, type: 2}
 --- !u!114 &114822978908416196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -755,7 +756,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyBar: {fileID: 0}
   maxEnergyPoints: 100
-  energyPerHit: 10
 --- !u!114 &114978401065010746
 MonoBehaviour:
   m_ObjectHideFlags: 1

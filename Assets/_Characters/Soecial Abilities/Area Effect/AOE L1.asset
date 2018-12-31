@@ -8,8 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd9a6e32c8ae5fc419e2b3261fca72b7, type: 3}
-  m_Name: Power Attack L1
+  m_Script: {fileID: 11500000, guid: fc0a4ac06691b5b4fa81462f3acfb6ab, type: 3}
+  m_Name: AOE L1
   m_EditorClassIdentifier: 
-  energyCost: 25
-  extraDamage: 30
+  energyCost: 10
+  damageToEachTarget: 10
+  radius: 5
