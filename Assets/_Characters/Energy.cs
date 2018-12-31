@@ -1,5 +1,4 @@
-﻿using RPG.CameraUI;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace RPG.Characters
@@ -12,32 +11,22 @@ namespace RPG.Characters
         [SerializeField]
         private float maxEnergyPoints = 100f;
 
-        [SerializeField]
-        private float energyPerHit = 10f;
-
         private float currentEnergyPoints = 100f;
-        private CameraRaycaster cameraRaycaster;
 
         void Start()
         {
             currentEnergyPoints = maxEnergyPoints;
-
-            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
-        void OnMouseOverEnemy(Enemy enemy)
+        public bool IsEnergyAvailable(float amount)
         {
-            if (Input.GetMouseButtonDown(1))
-            {
-                UpdateEnergyPoints();
-                UpdateEnergyBar();
-            }
+            return amount <= currentEnergyPoints;
         }
 
-        private void UpdateEnergyPoints()
+        public void ConsumeEnergy(float amount)
         {
-            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints - energyPerHit, 0f, maxEnergyPoints);
+            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints - amount, 0f, maxEnergyPoints);
+            UpdateEnergyBar();
         }
 
         private void UpdateEnergyBar()

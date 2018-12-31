@@ -11,8 +11,6 @@ namespace RPG.CameraUI
         [SerializeField] Texture2D enemyCursor = null;
 
         float maxRaycastDepth = 100f; // Hard coded value
-        int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
-
         const int POTENTIALLY_WALKABLE_LAYER = 8;
 
         public delegate void OnMouseOverTerrain(Vector3 destination);

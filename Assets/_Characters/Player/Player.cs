@@ -13,16 +13,17 @@ namespace RPG.Characters
 {
     public class Player : MonoBehaviour, IDamageable
     {
-        [SerializeField] int enemyLayer = 9;
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float damagePerHit = 10f;
         [SerializeField] Weapon weaponInUse = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
+        [SerializeField] SpecialAbilityConfig ability1;
 
         Animator animator;
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
+        Energy energy;
 
         public float healthAsPercentage { get { return currentHealthPoints / maxHealthPoints; } }
 
@@ -32,6 +33,9 @@ namespace RPG.Characters
             SetCurrentMaxHealth();
             PutWeaponInHand();
             SetupRuntimeAnimator();
+
+            energy = GetComponent<Energy>();
+            ability1.AddComponent(gameObject);
         }
 
         public void TakeDamage(float damage)
@@ -83,6 +87,19 @@ namespace RPG.Characters
                 {
                     AttackTarget(enemy);
                 }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                AttemptSpecialAbility1(enemy);
+            }
+        }
+
+        private void AttemptSpecialAbility1(Enemy enemy)
+        {
+            if (energy.IsEnergyAvailable(ability1.GetEnergyCost()))
+            {
+                energy.ConsumeEnergy(ability1.GetEnergyCost());
+                
             }
         }
 
