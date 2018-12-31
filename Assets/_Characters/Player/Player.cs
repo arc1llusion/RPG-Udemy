@@ -72,28 +72,26 @@ namespace RPG.Characters
         private void RegisterForMouseClick()
         {
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
-        void OnMouseClick(RaycastHit raycastHit, int layerHit)
+        void OnMouseOverEnemy(Enemy enemy)
         {
-            if (layerHit == enemyLayer)
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
-                var enemy = raycastHit.collider.gameObject;
-                if (IsTargetInRange(enemy))
+                if (IsTargetInRange(enemy.gameObject))
                 {
                     AttackTarget(enemy);
                 }
             }
         }
 
-        private void AttackTarget(GameObject target)
+        private void AttackTarget(Enemy target)
         {
-            var enemyComponent = target.GetComponent<Enemy>();
             if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
             {
                 animator.SetTrigger("Attack"); // TODO make const
-                enemyComponent.TakeDamage(damagePerHit);
+                target.TakeDamage(damagePerHit);
                 lastHitTime = Time.time;
             }
         }

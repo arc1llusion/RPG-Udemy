@@ -2,13 +2,13 @@
 
 public class AudioTrigger : MonoBehaviour
 {
-    [SerializeField] AudioClip clip;
+    [SerializeField] AudioClip clip = null;
     [SerializeField] int layerFilter = 11;
     [SerializeField] float triggerRadius = 0f;
     [SerializeField] bool isOneTimeOnly = true;
 
     [SerializeField] bool hasPlayed = false;
-    AudioSource audioSource;
+    AudioSource audioSource = null;
 
     void Start()
     {

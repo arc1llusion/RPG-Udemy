@@ -9,7 +9,7 @@ namespace RPG.Weapons
 {
     public class Projectile : MonoBehaviour
     {
-        [SerializeField] float projectileSpeed;
+        [SerializeField] float projectileSpeed = 0f;
         [SerializeField] GameObject shooter; // So can inspected when paused
 
         const float DESTROY_DELAY = 0.01f;
