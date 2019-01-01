@@ -14,12 +14,9 @@ namespace RPG.Characters
         [SerializeField]
         float radius = 5f;
 
-        public override void AttachComponentTo(GameObject gameObjectToAttachTo)
+        public override AbilityBeheviour GetBehaviourComponent(GameObject gameObjectToAttachTo)
         {
-            var behaviorComponent = gameObjectToAttachTo.AddComponent<AreaEffectBehavior>();
-            behaviorComponent.SetConfig(this);
-
-            base.behavior = behaviorComponent;
+            return gameObjectToAttachTo.AddComponent<AreaEffectBehavior>();
         }
 
         public float GetDamageToEachTarget()

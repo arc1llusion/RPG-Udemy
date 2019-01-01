@@ -30,6 +30,8 @@ namespace RPG.Characters
 
         [SerializeField] AudioClip[] audioClips = null;
 
+        protected AbilityBeheviour behavior;
+
         public float GetEnergyCost()
         {
             return energyCost;
@@ -46,9 +48,15 @@ namespace RPG.Characters
             return audioClips[idx];
         }
 
-        protected AbilityBeheviour behavior;
+        public void AttachAbilityTo(GameObject objectToAttachTo)
+        {
+            var behaviorComponent = GetBehaviourComponent(objectToAttachTo);
 
-        public abstract void AttachComponentTo(GameObject gameObjectToAttachTo);
+            behaviorComponent.SetConfig(this);
+            behavior = behaviorComponent;
+        }
+
+        public abstract AbilityBeheviour GetBehaviourComponent(GameObject gameObjectToAttachTo);
 
         public void Use(AbilityUseParams abilityParams)
         {

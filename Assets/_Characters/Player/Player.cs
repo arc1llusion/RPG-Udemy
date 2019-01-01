@@ -60,10 +60,15 @@ namespace RPG.Characters
             AttachInitialAbilities();
         }
 
+        public void PutWeaponInHand(Weapon weaponConfig)
+        {
+            Debug.Log("Hello");
+        }
+
         private void AttachInitialAbilities()
         {
             foreach (var ability in abilities)
-                ability.AttachComponentTo(gameObject);
+                ability.AttachAbilityTo(gameObject);
         }
 
         void Update()
