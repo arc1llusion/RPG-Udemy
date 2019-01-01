@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 // TODO consider re-wire
 using RPG.Core;
@@ -17,7 +16,10 @@ namespace RPG.Characters
 
         [SerializeField] float attackRadius = 4f;
         [SerializeField] float damagePerShot = 9f;
-        [SerializeField] float secondsBetweenShots = 0.5f;
+        [SerializeField] float firingPeriodInSeconds = 0.5f;
+        [SerializeField] float firingPeriodVariation = 0.1f;
+
+
         [SerializeField] GameObject projectileToUse = null;
         [SerializeField] GameObject projectileSocket = null;
         [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
@@ -25,7 +27,7 @@ namespace RPG.Characters
         bool isAttacking = false;
         float currentHealthPoints;
         AICharacterControl aiCharacterControl = null;
-        GameObject player = null;
+        Player player = null;
 
         public float healthAsPercentage { get { return currentHealthPoints / maxHealthPoints; } }
 
@@ -37,18 +39,26 @@ namespace RPG.Characters
 
         void Start()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = FindObjectOfType<Player>();
             aiCharacterControl = GetComponent<AICharacterControl>();
             currentHealthPoints = maxHealthPoints;
         }
 
         void Update()
         {
+            if(player.healthAsPercentage <= Mathf.Epsilon)
+            {
+                StopAllCoroutines();
+                Destroy(this);
+            }
+
             float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
             if (distanceToPlayer <= attackRadius && !isAttacking)
             {
                 isAttacking = true;
-                InvokeRepeating("FireProjectile", 0f, secondsBetweenShots); // TODO switch to coroutines
+
+                float variation = Random.Range(-firingPeriodVariation, firingPeriodVariation);
+                InvokeRepeating("FireProjectile", 0f, firingPeriodInSeconds + variation); // TODO switch to coroutines
             }
 
             if (distanceToPlayer > attackRadius)
