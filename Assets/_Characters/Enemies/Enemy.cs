@@ -37,6 +37,11 @@ namespace RPG.Characters
             if (currentHealthPoints <= 0) { Destroy(gameObject); }
         }
 
+        public void Heal(float amount)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints + amount, 0f, maxHealthPoints);
+        }
+
         void Start()
         {
             player = FindObjectOfType<Player>();
@@ -46,7 +51,7 @@ namespace RPG.Characters
 
         void Update()
         {
-            if(player.healthAsPercentage <= Mathf.Epsilon)
+            if (player.healthAsPercentage <= Mathf.Epsilon)
             {
                 StopAllCoroutines();
                 Destroy(this);

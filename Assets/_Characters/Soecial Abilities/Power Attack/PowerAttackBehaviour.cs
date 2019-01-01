@@ -11,6 +11,7 @@ namespace RPG.Characters
         {
             DealDamage(abilityParams);
             PlayParticleEffect();
+            PlayAudioClip();
         }
 
         private void DealDamage(AbilityUseParams abilityParams)

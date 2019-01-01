@@ -8,8 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92eef333b8204324eb1d94059387abb6, type: 3}
-  m_Name: Self Heal L1
+  m_Script: {fileID: 11500000, guid: cd9a6e32c8ae5fc419e2b3261fca72b7, type: 3}
+  m_Name: PA_L1
   m_EditorClassIdentifier: 
-  energyCost: 30
-  healAmount: 300
+  energyCost: 25
+  particlePrefab: {fileID: 1411470094312940, guid: 90c024dcca902a74a977e7ef534b1999,
+    type: 2}
+  audioClip: {fileID: 0}
+  extraDamage: 30

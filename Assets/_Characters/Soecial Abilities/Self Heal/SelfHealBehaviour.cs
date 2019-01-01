@@ -9,7 +9,9 @@ namespace RPG.Characters
     {
         public override void Use(AbilityUseParams abilityParams)
         {
-            abilityParams.caster.TakeDamage(-config.GetHealAmount());
+            abilityParams.caster.Heal(config.GetHealAmount());
+            PlayParticleEffect(true);
+            PlayAudioClip();
         }
     }
 }
