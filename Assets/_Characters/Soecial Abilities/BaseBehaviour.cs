@@ -25,7 +25,8 @@ namespace RPG.Characters
         {
             if (config.GetParticlePrefab() != null)
             {
-                var ps = Instantiate(config.GetParticlePrefab(), transform.position, Quaternion.identity);
+                var particlePrefab = config.GetParticlePrefab();
+                var ps = Instantiate(config.GetParticlePrefab(), transform.position, particlePrefab.transform.rotation);
 
                 if(parentToCaster)
                 {
@@ -34,7 +35,7 @@ namespace RPG.Characters
 
                 var psComponent = ps.GetComponent<ParticleSystem>();
                 psComponent.Play();
-                Destroy(psComponent, psComponent.main.duration);
+                Destroy(psComponent.gameObject, psComponent.main.duration + psComponent.main.startLifetime.constant);
             }
         }
 
