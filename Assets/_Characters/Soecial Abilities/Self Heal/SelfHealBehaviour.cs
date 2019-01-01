@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-    public class SelfHealBeheviour : BaseBehaviour<SelfHealConfig>
+    public class SelfHealBeheviour : AbilityBeheviour
     {
         public override void Use(AbilityUseParams abilityParams)
         {
-            abilityParams.caster.Heal(config.GetHealAmount());
-            PlayParticleEffect(true);
-            PlayAudioClip();
+            abilityParams.caster.Heal((config as SelfHealConfig).GetHealAmount());
+            PlayParticleEffect();
+            PlayAbilitySound();
         }
     }
 }

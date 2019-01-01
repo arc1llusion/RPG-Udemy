@@ -6,11 +6,6 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-    public interface ISpecialAbility
-    {
-        void Use(AbilityUseParams abilityParams);
-    }
-
     public struct AbilityUseParams
     {
         public IDamageable caster;
@@ -33,7 +28,7 @@ namespace RPG.Characters
 
         [SerializeField] GameObject particlePrefab = null;
 
-        [SerializeField] AudioClip audioClip = null;
+        [SerializeField] AudioClip[] audioClips = null;
 
         public float GetEnergyCost()
         {
@@ -45,12 +40,13 @@ namespace RPG.Characters
             return particlePrefab;
         }
 
-        public AudioClip GetAudioClip()
+        public AudioClip GetRandomAbilitySound()
         {
-            return audioClip;
+            var idx = UnityEngine.Random.Range(0, audioClips.Length);
+            return audioClips[idx];
         }
 
-        protected ISpecialAbility behavior;
+        protected AbilityBeheviour behavior;
 
         public abstract void AttachComponentTo(GameObject gameObjectToAttachTo);
 

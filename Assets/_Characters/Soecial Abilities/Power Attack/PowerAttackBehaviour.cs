@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
 
 namespace RPG.Characters
 {
-    public class PowerAttackBehaviour : BaseBehaviour<PowerAttackConfig>
+    public class PowerAttackBehaviour : AbilityBeheviour
     {
         public override void Use(AbilityUseParams abilityParams)
         {
             DealDamage(abilityParams);
             PlayParticleEffect();
-            PlayAudioClip();
+            PlayAbilitySound();
         }
 
         private void DealDamage(AbilityUseParams abilityParams)
         {
-            float damageToDeal = abilityParams.baseDamage + config.GetExtraDamage();
+            float damageToDeal = abilityParams.baseDamage + (config as PowerAttackConfig).GetExtraDamage();
             abilityParams.target.TakeDamage(damageToDeal);
         }
     }

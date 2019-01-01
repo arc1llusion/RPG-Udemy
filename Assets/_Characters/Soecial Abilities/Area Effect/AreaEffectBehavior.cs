@@ -7,18 +7,18 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-    public class AreaEffectBehavior : BaseBehaviour<AreaEffectConfig>
+    public class AreaEffectBehavior : AbilityBeheviour
     {
         public override void Use(AbilityUseParams abilityParams)
         {
             DealingRadialDamage(abilityParams);
             PlayParticleEffect();
-            PlayAudioClip();
+            PlayAbilitySound();
         }
 
         private void DealingRadialDamage(AbilityUseParams abilityParams)
         {
-            var hits = Physics.SphereCastAll(transform.position, config.GetRadius(), Vector3.up, config.GetRadius());
+            var hits = Physics.SphereCastAll(transform.position, (config as AreaEffectConfig).GetRadius(), Vector3.up, (config as AreaEffectConfig).GetRadius());
 
             var enemies = hits.Where(h =>
             {
@@ -30,7 +30,7 @@ namespace RPG.Characters
             foreach (var hit in enemies)
             {
                 var enemy = hit.collider.gameObject.GetComponent<IDamageable>();
-                enemy.TakeDamage(abilityParams.baseDamage + config.GetDamageToEachTarget());
+                enemy.TakeDamage(abilityParams.baseDamage + (config as AreaEffectConfig).GetDamageToEachTarget());
             }
         }
     }
