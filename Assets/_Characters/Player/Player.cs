@@ -143,7 +143,7 @@ namespace RPG.Characters
             {
                 energy.ConsumeEnergy(energyCost);
 
-                var abilityParams = new AbilityUseParams(enemy, baseDamage);
+                var abilityParams = new AbilityUseParams(this, enemy, baseDamage);
                 abilities[abilityIndex].Use(abilityParams);
 
             }

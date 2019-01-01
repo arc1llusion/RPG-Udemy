@@ -13,11 +13,13 @@ namespace RPG.Characters
 
     public struct AbilityUseParams
     {
+        public IDamageable caster;
         public IDamageable target;
         public float baseDamage;
 
-        public AbilityUseParams(IDamageable target, float baseDamage)
+        public AbilityUseParams(IDamageable caster, IDamageable target, float baseDamage)
         {
+            this.caster = caster;
             this.target = target;
             this.baseDamage = baseDamage;
         }
@@ -25,14 +27,20 @@ namespace RPG.Characters
 
     public abstract class SpecialAbility : ScriptableObject
     {
-
         [Header("Special Ability General")]
         [SerializeField]
         float energyCost = 10f;
 
+        [SerializeField] GameObject particlePrefab = null;
+
         public float GetEnergyCost()
         {
             return energyCost;
+        }
+
+        public GameObject GetParticlePrefab()
+        {
+            return particlePrefab;
         }
 
         protected ISpecialAbility behavior;
