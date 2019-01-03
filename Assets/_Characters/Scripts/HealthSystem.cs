@@ -80,7 +80,7 @@ namespace RPG.Characters
             animator.SetTrigger(DEATH_TRIGGER);
 
 
-            var playerComponent = GetComponent<Player>();
+            var playerComponent = GetComponent<PlayerMovement>();
             if(playerComponent && playerComponent.isActiveAndEnabled)
             {
                 if (deathSounds.Length > 0)

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 
 // TODO consider re-wire...
 using RPG.CameraUI;
-using RPG.Core;
-using UnityEngine.SceneManagement;
+using System;
 
 namespace RPG.Characters
 {
-    [RequireComponent(typeof(AudioSource))]
-    public class Player : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] float baseDamage = 10f;
         [SerializeField] Weapon currentWeaponConfig = null;
@@ -28,7 +23,7 @@ namespace RPG.Characters
         [SerializeField]
         ParticleSystem criticalHitParticleSystem = null;
 
-        
+
         const string ATTACK_TRIGGER = "Attack";
         private const string DEFAULT_ATTACK = "DEFAULT ATTACK";
         Enemy currentEnemy = null;
@@ -38,31 +33,61 @@ namespace RPG.Characters
         SpecialAbilities energy;
         GameObject weaponObject;
         SpecialAbilities abilities;
-        
+        Character character;
+
 
         void Start()
         {
+            character = GetComponent<Character>();
             abilities = GetComponent<SpecialAbilities>();
 
-            RegisterForMouseClick();
+            RegisterForMouseEvents();
             PutWeaponInHand(currentWeaponConfig);
             SetAttackAnimation();
         }
 
         void Update()
         {
-            var healthPercentage = GetComponent<HealthSystem>().healthAsPercentage;
-            if(healthPercentage > Mathf.Epsilon)
+            ScanForSpecialAbilityKeyDown();
+        }
+
+        private void RegisterForMouseEvents()
+        {
+            cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+            cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
+        }
+
+        private void OnMouseOverPotentiallyWalkable(Vector3 destination)
+        {
+            if (Input.GetMouseButton(0))
             {
-                ScanForSpecialAbilityKeyDown();
+                character.SetDestination(destination);
+            }
+        }
+
+        void OnMouseOverEnemy(Enemy enemy)
+        {
+            currentEnemy = enemy;
+
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
+            {
+                if (IsTargetInRange(enemy.gameObject))
+                {
+                    AttackTarget();
+                }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                abilities.AttemptSpecialAbility(0, currentEnemy.gameObject);
             }
         }
 
         private void ScanForSpecialAbilityKeyDown()
         {
-            for(int i = 1; i < abilities.GetNumberOfAbilities(); ++i)
+            for (int i = 1; i < abilities.GetNumberOfAbilities(); ++i)
             {
-                if(Input.GetKeyDown(i.ToString()))
+                if (Input.GetKeyDown(i.ToString()))
                 {
                     abilities.AttemptSpecialAbility(i, currentEnemy == null ? null : currentEnemy.gameObject);
                 }
@@ -82,7 +107,7 @@ namespace RPG.Characters
             var weaponPrefab = currentWeaponConfig.GetWeaponPrefab();
 
             GameObject dominantHand = RequestDominantHand();
-            if(weaponObject != null)
+            if (weaponObject != null)
             {
                 Destroy(weaponObject);
             }
@@ -101,28 +126,6 @@ namespace RPG.Characters
             return dominantHands[0].gameObject;
         }
 
-        private void RegisterForMouseClick()
-        {
-            cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-        }
-
-        void OnMouseOverEnemy(Enemy enemy)
-        {
-            currentEnemy = enemy;
-
-            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
-            {
-                if (IsTargetInRange(enemy.gameObject))
-                {
-                    AttackTarget();
-                }
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                abilities.AttemptSpecialAbility(0, currentEnemy.gameObject);
-            }
-        }
 
         private void AttackTarget()
         {

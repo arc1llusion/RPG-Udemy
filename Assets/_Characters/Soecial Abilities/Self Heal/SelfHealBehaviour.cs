@@ -11,7 +11,7 @@ namespace RPG.Characters
         {
             PlayAbilitySound();
 
-            var playerHealth = GetComponent<Player>().GetComponent<HealthSystem>();
+            var playerHealth = GetComponent<PlayerMovement>().GetComponent<HealthSystem>();
             playerHealth.Heal((config as SelfHealConfig).GetHealAmount());
 
             PlayParticleEffect();

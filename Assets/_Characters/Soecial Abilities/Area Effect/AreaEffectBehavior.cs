@@ -23,7 +23,7 @@ namespace RPG.Characters
             foreach (var hit in hits)
             {
                 var damageable = hit.collider.gameObject.GetComponent<HealthSystem>();
-                var player = hit.collider.gameObject.GetComponent<Player>();
+                var player = hit.collider.gameObject.GetComponent<PlayerMovement>();
                 if (damageable != null && player == null)
                 {
                     var enemy = hit.collider.gameObject.GetComponent<HealthSystem>();

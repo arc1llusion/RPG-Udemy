@@ -46,7 +46,7 @@ namespace RPG.Characters
             {
                 audioSource.PlayOneShot(pickUpSFX);
             }
-            FindObjectOfType<Player>().PutWeaponInHand(weaponConfig);
+            FindObjectOfType<PlayerMovement>().PutWeaponInHand(weaponConfig);
 
             //Destroy(this.gameObject);
         }
