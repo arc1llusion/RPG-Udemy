@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 11469404}
   - component: {fileID: 195367535995020892}
   - component: {fileID: 114272382486777280}
-  - component: {fileID: 114978401065010746}
   - component: {fileID: 114633348878164724}
   - component: {fileID: 114822978908416196}
   - component: {fileID: 82634441478647586}
@@ -86,14 +85,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1000
-  m_StationaryTurnSpeed: 800
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 0.7
-  m_AnimSpeedMultiplier: 1.5
-  m_GroundCheckDistance: 1
+  movingTurnSpeed: 360
+  stationaryTurnSpeed: 180
 --- !u!136 &13615390
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -883,6 +876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb75cb33cc6f884db40fe6cec105d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stoppingDistance: 1
+  moveSpeedMultiplier: 1
 --- !u!114 &114633348878164724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -932,18 +927,6 @@ MonoBehaviour:
   energyOrb: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerSecond: 3
---- !u!114 &114978401065010746
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!137 &137556406940646026
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

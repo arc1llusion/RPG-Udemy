@@ -9,9 +9,13 @@ namespace RPG.Characters
     {
         public override void Use(AbilityUseParams abilityParams)
         {
-            abilityParams.caster.Heal((config as SelfHealConfig).GetHealAmount());
-            PlayParticleEffect();
             PlayAbilitySound();
+            //abilityParams.caster.Heal((config as SelfHealConfig).GetHealAmount());
+
+            var playerHealth = GetComponent<Player>().GetComponent<HealthSystem>();
+            playerHealth.Heal((config as SelfHealConfig).GetHealAmount());
+
+            PlayParticleEffect();
         }
     }
 }

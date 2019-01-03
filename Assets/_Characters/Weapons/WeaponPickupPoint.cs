@@ -6,8 +6,8 @@ namespace RPG.Characters
     [ExecuteInEditMode]
     public class WeaponPickupPoint : MonoBehaviour
     {
-        [SerializeField] Weapon weaponConfig;
-        [SerializeField] AudioClip pickUpSFX;
+        [SerializeField] Weapon weaponConfig = null;
+        [SerializeField] AudioClip pickUpSFX = null;
 
         AudioSource audioSource;
 
