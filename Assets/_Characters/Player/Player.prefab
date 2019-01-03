@@ -921,6 +921,7 @@ MonoBehaviour:
   energyBar: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerSecond: 3
+  outOfEnergySound: {fileID: 8300000, guid: 826116f990cfd0f49801f5c7b1915748, type: 3}
 --- !u!137 &137556406940646026
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

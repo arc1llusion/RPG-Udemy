@@ -64,7 +64,7 @@ namespace RPG.Characters
             {
                 if(Input.GetKeyDown(i.ToString()))
                 {
-                    abilities.AttemptSpecialAbility(i);
+                    abilities.AttemptSpecialAbility(i, currentEnemy == null ? null : currentEnemy.gameObject);
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace RPG.Characters
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                abilities.AttemptSpecialAbility(0);
+                abilities.AttemptSpecialAbility(0, currentEnemy.gameObject);
             }
         }
 

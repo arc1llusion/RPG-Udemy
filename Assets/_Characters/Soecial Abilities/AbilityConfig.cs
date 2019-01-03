@@ -45,7 +45,7 @@ namespace RPG.Characters
 
         public abstract AbilityBeheviour GetBehaviourComponent(GameObject gameObjectToAttachTo);
 
-        public void Use(GameObject target)
+        public void Use(GameObject target = null)
         {
             behavior.Use(target);
         }
