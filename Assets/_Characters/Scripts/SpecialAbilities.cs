@@ -59,7 +59,7 @@ namespace RPG.Characters
             {
                 if (outOfEnergySound != null)
                 {
-                        audioSource.PlayOneShot(outOfEnergySound);
+                    audioSource.PlayOneShot(outOfEnergySound);
                 }
             }
         }

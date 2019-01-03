@@ -5,14 +5,27 @@ using RPG.CameraUI; // TODO consider re-wiring
 
 namespace RPG.Characters
 {
+    [SelectionBase]
     [RequireComponent(typeof(NavMeshAgent))]
-    public class CharacterMovement : MonoBehaviour
+    public class Character : MonoBehaviour
     {
+        [Header("Capsule Collider Settings")]
+        [SerializeField] Vector3 capsuleCenter = new Vector3(0, 1.03f, 0);
+        [SerializeField] float capsuleRadius = 0.2f;
+        [SerializeField] float capsuleHeight = 2.03f;
+
+        [Header("Animator Settings")]
+        [SerializeField] RuntimeAnimatorController animatorController;
+        [SerializeField] AnimatorOverrideController animatorOverrideController;
+        [SerializeField] Avatar characterAvatar;
+
+        [Header("Movement Properties")]
         [SerializeField] float stoppingDistance = 1f;
         [SerializeField] float moveSpeedMultiplier = .7f;
         [SerializeField] float animSpeedMultiplier = 1.5f;
         [SerializeField] float movingTurnSpeed = 360;
-        [SerializeField] float stationaryTurnSpeed = 180;
+        [SerializeField] float stationaryTurnSpeed = 180;        
+
 
         Vector3 clickPoint;
         NavMeshAgent agent = null;
@@ -22,12 +35,28 @@ namespace RPG.Characters
         float forwardAmount;
         Vector3 groundNormal;
 
+        private void Awake()
+        {
+            AddRequiredComponents();
+        }
+
+        private void AddRequiredComponents()
+        {
+            animator = gameObject.AddComponent<Animator>();
+            animator.runtimeAnimatorController = animatorController;
+            animator.avatar = characterAvatar;
+
+            var capsuleCollider = gameObject.AddComponent<CapsuleCollider>();
+            capsuleCollider.center = capsuleCenter;
+            capsuleCollider.height = capsuleHeight;
+            capsuleCollider.radius = capsuleRadius;
+        }
+
         void Start()
         {
             var cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
             agent = GetComponent<NavMeshAgent>();
 
-            animator = GetComponent<Animator>();
             rigidBody = GetComponent<Rigidbody>();
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
 
