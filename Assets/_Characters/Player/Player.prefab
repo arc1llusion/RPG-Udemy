@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 9579096}
   - component: {fileID: 5426510}
   - component: {fileID: 13615390}
-  - component: {fileID: 11469404}
   - component: {fileID: 195367535995020892}
+  - component: {fileID: 82634441478647586}
   - component: {fileID: 114272382486777280}
   - component: {fileID: 114633348878164724}
   - component: {fileID: 114822978908416196}
-  - component: {fileID: 82634441478647586}
+  - component: {fileID: 114589266462522768}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -74,19 +74,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &11469404
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movingTurnSpeed: 360
-  stationaryTurnSpeed: 180
 --- !u!136 &13615390
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -877,7 +864,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stoppingDistance: 1
-  moveSpeedMultiplier: 1
+  moveSpeedMultiplier: 1.5
+  animSpeedMultiplier: 1.5
+  movingTurnSpeed: 360
+  stationaryTurnSpeed: 180
+--- !u!114 &114589266462522768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ab599e9397c6d4a8f67561ea8e8050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 100
+  healthBar: {fileID: 0}
+  damageSounds: []
+  deathSounds: []
+  deathVanishSeconds: 2
 --- !u!114 &114633348878164724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -889,27 +895,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9268856d129aa64a8ab4590ce181c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 1000
   baseDamage: 10
   currentWeaponConfig: {fileID: 11400000, guid: 42b20c93823e4e345ab656322c4f0316,
     type: 2}
   animatorOverrideController: {fileID: 22100000, guid: e92f24f13a6764b40bb121d6a2e3d168,
     type: 2}
-  abilities:
-  - {fileID: 11400000, guid: 4eb3a5c08ad59c741bbaca86637ad94a, type: 2}
-  - {fileID: 11400000, guid: 1474da79c4f965543bf6647b1c44c333, type: 2}
-  - {fileID: 11400000, guid: 05c00f2cfefc20f4d8b38205111059f0, type: 2}
-  damageSounds:
-  - {fileID: 8300000, guid: 97b7ab9bcc4f103459a435b75318ef84, type: 3}
-  - {fileID: 8300000, guid: 449c1f98f1dd8ca40a7512d0ee843fa5, type: 3}
-  - {fileID: 8300000, guid: a8124d6ee0fbd6d41bf9db492b45b8db, type: 3}
-  - {fileID: 8300000, guid: 1e1047b6e3265be4cad7b38a1bbc516b, type: 3}
-  - {fileID: 8300000, guid: f3af34d00dcb3054683bedac4b68ad68, type: 3}
-  - {fileID: 8300000, guid: 8f30047ade6915c428451fd267aea20e, type: 3}
-  deathSounds:
-  - {fileID: 8300000, guid: ea28a4acdc1161741b7cdb83359699dd, type: 3}
-  - {fileID: 8300000, guid: 85e72912093f8784abf6efc5ddce3531, type: 3}
-  - {fileID: 8300000, guid: 7c7e1427d61a0314f87e46b55391bdd0, type: 3}
   criticalHitChance: 0.1
   criticalHitMultiplier: 1.25
   criticalHitParticleSystem: {fileID: 198890159192789322}
@@ -924,7 +914,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b15b75cdb6497643ae579743a62a33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyOrb: {fileID: 0}
+  abilities:
+  - {fileID: 11400000, guid: 4eb3a5c08ad59c741bbaca86637ad94a, type: 2}
+  - {fileID: 11400000, guid: 1474da79c4f965543bf6647b1c44c333, type: 2}
+  - {fileID: 11400000, guid: 05c00f2cfefc20f4d8b38205111059f0, type: 2}
+  energyBar: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerSecond: 3
 --- !u!137 &137556406940646026

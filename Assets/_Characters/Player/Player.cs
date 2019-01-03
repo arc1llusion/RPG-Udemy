@@ -17,7 +17,6 @@ namespace RPG.Characters
         [SerializeField] float baseDamage = 10f;
         [SerializeField] Weapon currentWeaponConfig = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
-        [SerializeField] AbilityConfig[] abilities = null;
 
         [Range(.1f, 1.0f)]
         [SerializeField]
@@ -36,24 +35,18 @@ namespace RPG.Characters
         Animator animator;
         CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
-        Energy energy;
+        SpecialAbilities energy;
         GameObject weaponObject;
+        SpecialAbilities abilities;
         
 
         void Start()
         {
-            energy = GetComponent<Energy>();
+            abilities = GetComponent<SpecialAbilities>();
 
             RegisterForMouseClick();
             PutWeaponInHand(currentWeaponConfig);
             SetAttackAnimation();
-            AttachInitialAbilities();
-        }
-
-        private void AttachInitialAbilities()
-        {
-            foreach (var ability in abilities)
-                ability.AttachAbilityTo(gameObject);
         }
 
         void Update()
@@ -67,11 +60,11 @@ namespace RPG.Characters
 
         private void ScanForSpecialAbilityKeyDown()
         {
-            for(int i = 1; i < abilities.Length; ++i)
+            for(int i = 1; i < abilities.GetNumberOfAbilities(); ++i)
             {
                 if(Input.GetKeyDown(i.ToString()))
                 {
-                    AttemptSpecialAbility(i);
+                    abilities.AttemptSpecialAbility(i);
                 }
             }
         }
@@ -127,21 +120,7 @@ namespace RPG.Characters
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                AttemptSpecialAbility(0);
-            }
-        }
-
-        private void AttemptSpecialAbility(int abilityIndex)
-        {
-            var energyCost = abilities[abilityIndex].GetEnergyCost();
-
-            if (energy.IsEnergyAvailable(energyCost))
-            {
-                energy.ConsumeEnergy(energyCost);
-
-                var abilityParams = new AbilityUseParams(this, currentEnemy, baseDamage);
-                abilities[abilityIndex].Use(abilityParams);
-
+                abilities.AttemptSpecialAbility(0);
             }
         }
 
