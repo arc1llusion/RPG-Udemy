@@ -9,28 +9,26 @@ namespace RPG.Characters
 {
     public class AreaEffectBehavior : AbilityBeheviour
     {
-        public override void Use(AbilityUseParams abilityParams)
+        public override void Use(GameObject target)
         {
-            DealingRadialDamage(abilityParams);
+            DealingRadialDamage();
             PlayParticleEffect();
             PlayAbilitySound();
         }
 
-        private void DealingRadialDamage(AbilityUseParams abilityParams)
+        private void DealingRadialDamage()
         {
             var hits = Physics.SphereCastAll(transform.position, (config as AreaEffectConfig).GetRadius(), Vector3.up, (config as AreaEffectConfig).GetRadius());
 
-            var enemies = hits.Where(h =>
+            foreach (var hit in hits)
             {
-                var component = h.collider.gameObject.GetComponent<IDamageable>();
-
-                return component != null && component != abilityParams.caster;
-            });
-
-            foreach (var hit in enemies)
-            {
-                var enemy = hit.collider.gameObject.GetComponent<IDamageable>();
-                enemy.TakeDamage(abilityParams.baseDamage + (config as AreaEffectConfig).GetDamageToEachTarget());
+                var damageable = hit.collider.gameObject.GetComponent<HealthSystem>();
+                var player = hit.collider.gameObject.GetComponent<Player>();
+                if (damageable != null && player == null)
+                {
+                    var enemy = hit.collider.gameObject.GetComponent<HealthSystem>();
+                    enemy.TakeDamage((config as AreaEffectConfig).GetDamageToEachTarget());
+                }
             }
         }
     }

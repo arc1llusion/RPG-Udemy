@@ -6,19 +6,6 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-    public struct AbilityUseParams
-    {
-        public IDamageable caster;
-        public IDamageable target;
-        public float baseDamage;
-
-        public AbilityUseParams(IDamageable caster, IDamageable target, float baseDamage)
-        {
-            this.caster = caster;
-            this.target = target;
-            this.baseDamage = baseDamage;
-        }
-    }
 
     public abstract class AbilityConfig : ScriptableObject
     {
@@ -58,9 +45,9 @@ namespace RPG.Characters
 
         public abstract AbilityBeheviour GetBehaviourComponent(GameObject gameObjectToAttachTo);
 
-        public void Use(AbilityUseParams abilityParams)
+        public void Use(GameObject target)
         {
-            behavior.Use(abilityParams);
+            behavior.Use(target);
         }
     }
 

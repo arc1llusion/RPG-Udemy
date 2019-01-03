@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 namespace RPG.Characters
 {
     [RequireComponent(typeof(AudioSource))]
-    public class Player : MonoBehaviour, IDamageable
+    public class Player : MonoBehaviour
     {
         [SerializeField] float baseDamage = 10f;
         [SerializeField] Weapon currentWeaponConfig = null;
@@ -130,7 +130,7 @@ namespace RPG.Characters
             {
                 SetAttackAnimation();
                 animator.SetTrigger(ATTACK_TRIGGER);
-                currentEnemy.TakeDamage(CalculateDamage());
+                currentEnemy.GetComponent<HealthSystem>().TakeDamage(CalculateDamage());
                 lastHitTime = Time.time;
             }
         }
@@ -153,16 +153,6 @@ namespace RPG.Characters
         {
             float distanceToTarget = (target.transform.position - transform.position).magnitude;
             return distanceToTarget <= currentWeaponConfig.GetMaxAttackRange();
-        }
-
-        public void TakeDamage(float damage)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Heal(float heal)
-        {
-            throw new NotImplementedException();
         }
     }
 }

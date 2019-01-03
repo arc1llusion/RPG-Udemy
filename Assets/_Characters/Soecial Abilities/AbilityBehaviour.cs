@@ -55,6 +55,6 @@ namespace RPG.Characters
             }
         }
 
-        public abstract void Use(AbilityUseParams abilityParams);
+        public abstract void Use(GameObject target = null);
     }
 }

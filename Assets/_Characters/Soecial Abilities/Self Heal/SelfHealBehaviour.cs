@@ -7,10 +7,9 @@ namespace RPG.Characters
 {
     public class SelfHealBeheviour : AbilityBeheviour
     {
-        public override void Use(AbilityUseParams abilityParams)
+        public override void Use(GameObject target)
         {
             PlayAbilitySound();
-            //abilityParams.caster.Heal((config as SelfHealConfig).GetHealAmount());
 
             var playerHealth = GetComponent<Player>().GetComponent<HealthSystem>();
             playerHealth.Heal((config as SelfHealConfig).GetHealAmount());
