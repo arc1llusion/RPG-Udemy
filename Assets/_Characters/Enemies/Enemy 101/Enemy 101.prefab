@@ -354,6 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4404743560113244}
+  - component: {fileID: 114453962980621804}
   m_Layer: 0
   m_Name: Hand_R
   m_TagString: Untagged
@@ -416,6 +417,7 @@ GameObject:
   - component: {fileID: 4928566608083060}
   - component: {fileID: 114813656298057862}
   - component: {fileID: 114126515013818516}
+  - component: {fileID: 114916053022114288}
   m_Layer: 0
   m_Name: Enemy 101
   m_TagString: Untagged
@@ -716,7 +718,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4639854152437152}
-  - component: {fileID: 95483733485396198}
   m_Layer: 0
   m_Name: Character_Knights_Soldier_01
   m_TagString: Untagged
@@ -749,7 +750,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4120622720352518}
-  - component: {fileID: 114628807595815022}
   m_Layer: 0
   m_Name: Hand_L
   m_TagString: Untagged
@@ -1888,24 +1888,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1879843015164140}
   m_Mesh: {fileID: 4300000, guid: d288a0e4a2d923b46898986e979da643, type: 3}
---- !u!95 &95483733485396198
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1751635998543044}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: d288a0e4a2d923b46898986e979da643, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114126515013818516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1920,12 +1902,12 @@ MonoBehaviour:
   baseDamage: 10
   currentWeaponConfig: {fileID: 11400000, guid: 42b20c93823e4e345ab656322c4f0316,
     type: 2}
---- !u!114 &114628807595815022
+--- !u!114 &114453962980621804
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1794597969042232}
+  m_GameObject: {fileID: 1304289379641472}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610f816287df94a478980beb4ea34d2d, type: 3}
@@ -1956,6 +1938,19 @@ MonoBehaviour:
   stationaryTurnSpeed: 180
   navMeshSteeringSpeed: 1
   navMeshStoppingDistance: 1.3
+--- !u!114 &114916053022114288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1425944658907880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac46da830b7bf0443b928b3e59950ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRadius: 6.12
+  patrolPath: {fileID: 0}
 --- !u!137 &137484318799639088
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
