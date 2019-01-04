@@ -108,6 +108,11 @@ namespace RPG.Characters
         {
             navMeshAgent.destination = worldPosition;
         }
+        
+        public AnimatorOverrideController GetOverrideController()
+        {
+            return animatorOverrideController;
+        }
 
         private void Move(Vector3 movement)
         {
