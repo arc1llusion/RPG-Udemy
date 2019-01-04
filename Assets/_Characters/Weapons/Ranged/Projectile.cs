@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO consider re-wire
-using RPG.Core;
 
 namespace RPG.Characters
 {

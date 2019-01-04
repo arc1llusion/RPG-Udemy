@@ -20,7 +20,7 @@ namespace RPG.Characters
         ParticleSystem criticalHitParticleSystem = null;
 
 
-        Enemy currentEnemy = null;
+        EnemyAI currentEnemy = null;
         CameraRaycaster cameraRaycaster;
         SpecialAbilities energy;
         SpecialAbilities abilities;
@@ -57,7 +57,7 @@ namespace RPG.Characters
             }
         }
 
-        void OnMouseOverEnemy(Enemy enemy)
+        void OnMouseOverEnemy(EnemyAI enemy)
         {
             currentEnemy = enemy;
 

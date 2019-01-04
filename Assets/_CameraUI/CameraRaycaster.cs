@@ -18,7 +18,7 @@ namespace RPG.CameraUI
         public delegate void OnMouseOverTerrain(Vector3 destination);
         public event OnMouseOverTerrain onMouseOverPotentiallyWalkable;
 
-        public delegate void OnMouseOverEnemy(Enemy enemy);
+        public delegate void OnMouseOverEnemy(EnemyAI enemy);
         public event OnMouseOverEnemy onMouseOverEnemy;
 
 
@@ -51,7 +51,7 @@ namespace RPG.CameraUI
             RaycastHit raycast;
             bool potentiallyWalkable = Physics.Raycast(ray, out raycast, maxRaycastDepth);
 
-            var enemy = raycast.collider.gameObject.GetComponent<Enemy>();
+            var enemy = raycast.collider.gameObject.GetComponent<EnemyAI>();
             if (enemy != null)
             {
                 Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
