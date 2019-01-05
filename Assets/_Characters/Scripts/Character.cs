@@ -9,9 +9,9 @@ namespace RPG.Characters
     {
 
         [Header("Animator")]
-        [SerializeField] RuntimeAnimatorController animatorController;
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
-        [SerializeField] Avatar characterAvatar;
+        [SerializeField] RuntimeAnimatorController animatorController = null;
+        [SerializeField] AnimatorOverrideController animatorOverrideController = null;
+        [SerializeField] Avatar characterAvatar = null;
 
         [Header("Audio")]
         [Range(0f, 1f)]

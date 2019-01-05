@@ -65,6 +65,11 @@ namespace RPG.Characters
             return currentWeaponConfig;
         }
 
+        public void StopAttacking()
+        {
+            StopAllCoroutines();
+        }
+
         IEnumerator AttackTargetRepeatedly()
         {
             bool attackerStillAlive = GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
@@ -91,7 +96,7 @@ namespace RPG.Characters
         {
             transform.LookAt(target.transform);
             animator.SetTrigger(ATTACK_TRIGGER);
-            float damageDelay = 1.0f;
+            float damageDelay = currentWeaponConfig.GetDamageDelay();
 
             SetAttackAnimation();
             StartCoroutine(DamageAfterDelay(damageDelay));

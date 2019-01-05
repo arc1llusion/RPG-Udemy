@@ -53,7 +53,7 @@ namespace RPG.Characters
             if (energyCost < currentEnergyPoints)
             {
                 ConsumeEnergy(energyCost);
-                abilities[abilityIndex].Use();
+                abilities[abilityIndex].Use(target);
             }
             else
             {

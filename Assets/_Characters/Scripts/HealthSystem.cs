@@ -75,12 +75,11 @@ namespace RPG.Characters
 
         IEnumerator KillCharacter()
         {
-            StopAllCoroutines();
             characterMovement.Kill();
             animator.SetTrigger(DEATH_TRIGGER);
 
 
-            var playerComponent = GetComponent<PlayerMovement>();
+            var playerComponent = GetComponent<PlayerControl>();
             if(playerComponent && playerComponent.isActiveAndEnabled)
             {
                 if (deathSounds.Length > 0)

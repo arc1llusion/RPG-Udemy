@@ -21,7 +21,7 @@ namespace RPG.Characters
         enum State { Attacking, Idling, Chasing, Patrolling }
         State state = State.Idling;
 
-        PlayerMovement player = null;
+        PlayerControl player = null;
         float currentWeaponRange = 4f;
 
         float distanceToPlayer = 0f;
@@ -30,7 +30,7 @@ namespace RPG.Characters
         void Start()
         {
             character = GetComponent<Character>();
-            player = FindObjectOfType<PlayerMovement>();
+            player = FindObjectOfType<PlayerControl>();
 
         }
 
@@ -43,17 +43,19 @@ namespace RPG.Characters
             if (distanceToPlayer > chaseRadius && state != State.Patrolling)
             {
                 StopAllCoroutines();
+                ws.StopAttacking();
                 StartCoroutine(Patrol());
             }
             if (distanceToPlayer <= chaseRadius && state != State.Chasing)
             {
                 StopAllCoroutines();
+                ws.StopAttacking();
                 StartCoroutine(ChasePlayer());
             }
             if (distanceToPlayer <= currentWeaponRange && state != State.Attacking)
             {
                 StopAllCoroutines();
-                state = State.Attacking;
+                ws.AttackTarget(player.gameObject);
             }
         }
 
@@ -61,7 +63,7 @@ namespace RPG.Characters
         {
             state = State.Patrolling;
 
-            while(true)
+            while(patrolPath != null)
             {
                 Vector3 nextWaypointPos = patrolPath.transform.GetChild(nextWaypointIndex).position;
                 character.SetDestination(nextWaypointPos);
@@ -79,6 +81,7 @@ namespace RPG.Characters
                 yield return new WaitForEndOfFrame();
             }
         }
+
         private void CycleWaypointWhenClose(Vector3 nextWaypointPos)
         {
             if (Vector3.Distance(transform.position, nextWaypointPos) <= waypointTolerance)
