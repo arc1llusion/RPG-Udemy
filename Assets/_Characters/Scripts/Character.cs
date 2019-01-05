@@ -74,6 +74,11 @@ namespace RPG.Characters
             navMeshAgent.autoBraking = false;
         }
 
+        internal float GetAnimationSpeedMultiplier()
+        {
+            return animator.speed;
+        }
+
         public void Kill()
         {
             isAlive = false;

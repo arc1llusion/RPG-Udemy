@@ -14,6 +14,7 @@ namespace RPG.Characters
             DealingRadialDamage();
             PlayParticleEffect();
             PlayAbilitySound();
+            PlayAbilityAnimation();
         }
 
         private void DealingRadialDamage()
