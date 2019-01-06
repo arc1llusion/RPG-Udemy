@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace RPG.Characters
 {
     [CreateAssetMenu(menuName = ("RPG/Weapon"))]
     public class WeaponConfig : ScriptableObject
     {
-
         public Transform gripTransform;
 
-        [SerializeField] GameObject weaponPrefab = null;
-        [SerializeField] AnimationClip attackAnimation = null;
+        [SerializeField] GameObject weaponPrefab;
+        [SerializeField] AnimationClip attackAnimation;
         [SerializeField] float minTimeBetweenHits = .5f;
         [SerializeField] float maxAttackRange = 2f;
         [SerializeField] float additionalDamage = 10f;

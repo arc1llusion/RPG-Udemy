@@ -1,26 +1,62 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RPG.Characters
 {
     public class SpecialAbilities : MonoBehaviour
     {
+        [SerializeField] AbilityConfig[] abilities;
+        [SerializeField] Image energyBar;
+        [SerializeField] float maxEnergyPoints = 100f;
+        [SerializeField] float regenPointsPerSecond = 1f;
+        [SerializeField] AudioClip outOfEnergy;
 
-        [SerializeField] AbilityConfig[] abilities = null;
-        [SerializeField] private Image energyBar = null;
-        [SerializeField] private float maxEnergyPoints = 100f;
-        [SerializeField] private float regenPointsPerSecond = 1f;
-        [SerializeField] AudioClip outOfEnergySound = null;
+        float currentEnergyPoints;
+        AudioSource audioSource;
 
-        private float currentEnergyPoints = 100f;
+        float energyAsPercent { get { return currentEnergyPoints / maxEnergyPoints; } }
 
-        AudioSource audioSource = null;
-
-        float EnergyAsPercent
+        // Use this for initialization
+        void Start()
         {
-            get
+            audioSource = GetComponent<AudioSource>();
+
+            currentEnergyPoints = maxEnergyPoints;
+            AttachInitialAbilities();
+            UpdateEnergyBar();
+        }
+
+        void Update()
+        {
+            if (currentEnergyPoints < maxEnergyPoints)
             {
-                return currentEnergyPoints / maxEnergyPoints;
+                AddEnergyPoints();
+                UpdateEnergyBar();
+            }
+        }
+
+        void AttachInitialAbilities()
+        {
+            for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
+            {
+                abilities[abilityIndex].AttachAbilityTo(gameObject);
+            }
+        }
+
+        public void AttemptSpecialAbility(int abilityIndex, GameObject target = null)
+        {
+            var energyComponent = GetComponent<SpecialAbilities>();
+            var energyCost = abilities[abilityIndex].GetEnergyCost();
+
+            if (energyCost <= currentEnergyPoints)
+            {
+                ConsumeEnergy(energyCost);
+                abilities[abilityIndex].Use(target);
+            }
+            else
+            {
+                audioSource.PlayOneShot(outOfEnergy);
             }
         }
 
@@ -29,64 +65,22 @@ namespace RPG.Characters
             return abilities.Length;
         }
 
-        void Start()
+        private void AddEnergyPoints()
         {
-            currentEnergyPoints = maxEnergyPoints;
-            audioSource = GetComponent<AudioSource>();
-
-            AttachInitialAbilities();
-            UpdateEnergyBar();
-        }
-
-        private void Update()
-        {
-            if (currentEnergyPoints < maxEnergyPoints)
-            {
-                AddEnergyPoints();
-            }
-        }
-
-        public void AttemptSpecialAbility(int abilityIndex, GameObject target = null)
-        {
-            var energyCost = abilities[abilityIndex].GetEnergyCost();
-
-            if (energyCost < currentEnergyPoints)
-            {
-                ConsumeEnergy(energyCost);
-                abilities[abilityIndex].Use(target);
-            }
-            else
-            {
-                if (outOfEnergySound != null)
-                {
-                    audioSource.PlayOneShot(outOfEnergySound);
-                }
-            }
-        }
-
-        private void AttachInitialAbilities()
-        {
-            foreach (var ability in abilities)
-                ability.AttachAbilityTo(gameObject);
-        }
-
-        public void AddEnergyPoints()
-        {
-            var regenThisFrame = regenPointsPerSecond * Time.deltaTime;
-            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints + regenThisFrame, 0f, maxEnergyPoints);
-            UpdateEnergyBar();
+            var pointsToAdd = regenPointsPerSecond * Time.deltaTime;
+            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints + pointsToAdd, 0, maxEnergyPoints);
         }
 
         public void ConsumeEnergy(float amount)
         {
-            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints - amount, 0f, maxEnergyPoints);
+            float newEnergyPoints = currentEnergyPoints - amount;
+            currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
             UpdateEnergyBar();
         }
 
         private void UpdateEnergyBar()
         {
-            energyBar.fillAmount = EnergyAsPercent;
+            energyBar.fillAmount = energyAsPercent;
         }
     }
-
 }

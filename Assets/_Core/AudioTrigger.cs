@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 
 public class AudioTrigger : MonoBehaviour
 {
-    [SerializeField] AudioClip clip = null;
+    [SerializeField] AudioClip clip;
     [SerializeField] int layerFilter = 11;
     [SerializeField] float triggerRadius = 0f;
     [SerializeField] bool isOneTimeOnly = true;
 
     [SerializeField] bool hasPlayed = false;
-    AudioSource audioSource = null;
+    AudioSource audioSource;
 
     void Start()
     {
@@ -19,7 +19,6 @@ public class AudioTrigger : MonoBehaviour
         SphereCollider sphereCollider = gameObject.AddComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
         sphereCollider.radius = triggerRadius;
-
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 

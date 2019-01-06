@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections;
 using UnityEngine.Assertions;
+using UnityEngine;
 
 namespace RPG.Characters
 {
@@ -11,58 +9,69 @@ namespace RPG.Characters
         [SerializeField] float baseDamage = 10f;
         [SerializeField] WeaponConfig currentWeaponConfig = null;
 
-        private const string ATTACK_TRIGGER = "Attack";
-        private const string DEFAULT_ATTACK = "DEFAULT ATTACK";
-
-        Character character;
-        Animator animator;
-
         GameObject target;
         GameObject weaponObject;
-        float lastHitTime = 0f;
+        Animator animator;
+        Character character;
+        float lastHitTime;
+
+        const string ATTACK_TRIGGER = "Attack";
+        const string DEFAULT_ATTACK = "DEFAULT ATTACK";
 
         void Start()
         {
-            character = GetComponent<Character>();
             animator = GetComponent<Animator>();
+            character = GetComponent<Character>();
+
             PutWeaponInHand(currentWeaponConfig);
             SetAttackAnimation();
         }
 
         void Update()
         {
-            bool targetIsDead = false;
-            bool targetIsOutOfRange = false;
+            bool targetIsDead;
+            bool targetIsOutOfRange;
 
-            if(target == null)
+            if (target == null)
             {
                 targetIsDead = false;
                 targetIsOutOfRange = false;
             }
             else
             {
-                targetIsDead = target.GetComponent<HealthSystem>().healthAsPercentage <= Mathf.Epsilon;
-                targetIsOutOfRange = Vector3.Distance(target.transform.position, transform.position) >= currentWeaponConfig.GetMaxAttackRange();
+                // test if target is dead
+                var targethealth = target.GetComponent<HealthSystem>().healthAsPercentage;
+                targetIsDead = targethealth <= Mathf.Epsilon;
+
+                // test if target is out of range
+                var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+                targetIsOutOfRange = distanceToTarget > currentWeaponConfig.GetMaxAttackRange();
             }
 
             float characterHealth = GetComponent<HealthSystem>().healthAsPercentage;
-            bool characterIsDead = characterHealth <= Mathf.Epsilon;
+            bool characterIsDead = (characterHealth <= Mathf.Epsilon);
 
-            if(characterIsDead || targetIsOutOfRange || targetIsDead)
+            if (characterIsDead || targetIsOutOfRange || targetIsDead)
             {
                 StopAllCoroutines();
             }
         }
 
-        public void AttackTarget(GameObject target)
+        public void PutWeaponInHand(WeaponConfig weaponToUse)
         {
-            this.target = target;
-            StartCoroutine(AttackTargetRepeatedly());
+            currentWeaponConfig = weaponToUse;
+            var weaponPrefab = weaponToUse.GetWeaponPrefab();
+            GameObject dominantHand = RequestDominantHand();
+            Destroy(weaponObject); // empty hands
+            weaponObject = Instantiate(weaponPrefab, dominantHand.transform);
+            weaponObject.transform.localPosition = currentWeaponConfig.gripTransform.localPosition;
+            weaponObject.transform.localRotation = currentWeaponConfig.gripTransform.localRotation;
         }
 
-        public WeaponConfig GetCurrentWeapon()
+        public void AttackTarget(GameObject targetToAttack)
         {
-            return currentWeaponConfig;
+            target = targetToAttack;
+            StartCoroutine(AttackTargetRepeatedly());
         }
 
         public void StopAttacking()
@@ -72,42 +81,44 @@ namespace RPG.Characters
 
         IEnumerator AttackTargetRepeatedly()
         {
+            // determine if alive (attacker and defender)
             bool attackerStillAlive = GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
             bool targetStillAlive = target.GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
 
-            while(attackerStillAlive && targetStillAlive)
+            while (attackerStillAlive && targetStillAlive)
             {
                 float weaponHitPeriod = currentWeaponConfig.GetMinTimeBetweenHits();
-                float timeToWait = character.GetAnimationSpeedMultiplier();
+                float timeToWait = weaponHitPeriod * character.GetAnimSpeedMultiplier();
 
                 bool isTimeToHitAgain = Time.time - lastHitTime > timeToWait;
 
-                if(isTimeToHitAgain)
+                if (isTimeToHitAgain)
                 {
                     AttackTargetOnce();
                     lastHitTime = Time.time;
                 }
-
                 yield return new WaitForSeconds(timeToWait);
             }
         }
 
-        private void AttackTargetOnce()
+        void AttackTargetOnce()
         {
             transform.LookAt(target.transform);
             animator.SetTrigger(ATTACK_TRIGGER);
-            float damageDelay = currentWeaponConfig.GetDamageDelay();
-
+            float damageDelay = 1.0f; // todo get from the weapon
             SetAttackAnimation();
             StartCoroutine(DamageAfterDelay(damageDelay));
         }
 
-        IEnumerator DamageAfterDelay(float damageDelay)
+        IEnumerator DamageAfterDelay(float delay)
         {
-            yield return new WaitForSecondsRealtime(damageDelay);
+            yield return new WaitForSecondsRealtime(delay);
+            target.GetComponent<HealthSystem>().TakeDamage(CalculateDamage());
+        }
 
-            var hs = target.GetComponent<HealthSystem>();
-            hs.TakeDamage(CalculateDamage());
+        public WeaponConfig GetCurrentWeapon()
+        {
+            return currentWeaponConfig;
         }
 
         private void SetAttackAnimation()
@@ -115,7 +126,7 @@ namespace RPG.Characters
             if (!character.GetOverrideController())
             {
                 Debug.Break();
-                Debug.LogAssertion("Please provide " + gameObject + " with an animator override controller");
+                Debug.LogAssertion("Please provide " + gameObject + " with an animator override controller.");
             }
             else
             {
@@ -123,22 +134,6 @@ namespace RPG.Characters
                 animator.runtimeAnimatorController = animatorOverrideController;
                 animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip();
             }
-        }
-
-        public void PutWeaponInHand(WeaponConfig weaponToUse)
-        {
-            currentWeaponConfig = weaponToUse;
-            var weaponPrefab = currentWeaponConfig.GetWeaponPrefab();
-
-            GameObject dominantHand = RequestDominantHand();
-            if (weaponObject != null)
-            {
-                Destroy(weaponObject);
-            }
-
-            weaponObject = Instantiate(weaponPrefab, dominantHand.transform);
-            weaponObject.transform.localPosition = currentWeaponConfig.gripTransform.localPosition;
-            weaponObject.transform.localRotation = currentWeaponConfig.gripTransform.localRotation;
         }
 
         private GameObject RequestDominantHand()
@@ -149,23 +144,20 @@ namespace RPG.Characters
             Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on Player, please remove one");
             return dominantHands[0].gameObject;
         }
+
         private void AttackTarget()
         {
             if (Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits())
             {
                 SetAttackAnimation();
                 animator.SetTrigger(ATTACK_TRIGGER);
-                target.GetComponent<HealthSystem>().TakeDamage(CalculateDamage());
                 lastHitTime = Time.time;
             }
         }
 
         private float CalculateDamage()
         {
-            float damageBeforeCritical = (baseDamage + currentWeaponConfig.GetAdditionalDamage());
-            return damageBeforeCritical;
+            return baseDamage + currentWeaponConfig.GetAdditionalDamage();
         }
-
     }
-
 }

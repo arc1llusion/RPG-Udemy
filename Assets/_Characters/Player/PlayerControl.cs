@@ -15,7 +15,7 @@ namespace RPG.Characters
             character = GetComponent<Character>();
             abilities = GetComponent<SpecialAbilities>();
             weaponSystem = GetComponent<WeaponSystem>();
-
+            
             RegisterForMouseEvents();
         }
 
@@ -28,7 +28,7 @@ namespace RPG.Characters
 
         void Update()
         {
-            ScanForAbilityKeyDown();
+             ScanForAbilityKeyDown();
         }
 
         void ScanForAbilityKeyDown()
@@ -78,9 +78,9 @@ namespace RPG.Characters
 
         IEnumerator MoveToTarget(GameObject target)
         {
+            character.SetDestination(target.transform.position);
             while (!IsTargetInRange(target))
             {
-                character.SetDestination(target.transform.position);
                 yield return new WaitForEndOfFrame();
             }
             yield return new WaitForEndOfFrame();
