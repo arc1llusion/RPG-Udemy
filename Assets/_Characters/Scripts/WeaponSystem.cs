@@ -88,8 +88,9 @@ namespace RPG.Characters
 
             while (attackerStillAlive && targetStillAlive)
             {
-                float weaponHitPeriod = currentWeaponConfig.GetMinTimeBetweenHits();
-                float timeToWait = weaponHitPeriod * character.GetAnimSpeedMultiplier();
+                var animationClip = currentWeaponConfig.GetAttackAnimClip();
+                float animationClipTime = animationClip.length / character.GetAnimSpeedMultiplier();
+                float timeToWait = animationClipTime + currentWeaponConfig.GetTimeBetweenAnimationCycles();
 
                 bool isTimeToHitAgain = Time.time - lastHitTime > timeToWait;
 
@@ -106,7 +107,7 @@ namespace RPG.Characters
         {
             transform.LookAt(target.transform);
             animator.SetTrigger(ATTACK_TRIGGER);
-            float damageDelay = 1.0f; // todo get from the weapon
+            float damageDelay = currentWeaponConfig.GetDamageDelay(); // todo get from the weapon
             SetAttackAnimation();
             StartCoroutine(DamageAfterDelay(damageDelay));
         }
@@ -141,19 +142,9 @@ namespace RPG.Characters
         {
             var dominantHands = GetComponentsInChildren<DominantHand>();
             int numberOfDominantHands = dominantHands.Length;
-            Assert.IsFalse(numberOfDominantHands <= 0, "No DominantHand found on Player, please add one");
-            Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on Player, please remove one");
+            Assert.IsFalse(numberOfDominantHands <= 0, "No DominantHand found on " + gameObject.name + ", please add one");
+            Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on " + gameObject.name + ", please remove one");
             return dominantHands[0].gameObject;
-        }
-
-        private void AttackTarget()
-        {
-            if (Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits())
-            {
-                SetAttackAnimation();
-                animator.SetTrigger(ATTACK_TRIGGER);
-                lastHitTime = Time.time;
-            }
         }
 
         private float CalculateDamage()
